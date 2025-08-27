@@ -739,13 +739,21 @@
 
     /*aqui vamos a calcular las diferentes operaciones para los r*/
     // Definir reglas de cálculo para cada R
-    const reglas = {
+    /*const reglas = {
       R1: { vars: ["VAR 1", "VAR 2", "VAR 3"], operacion: "suma" },
       R2: { vars: ["VAR 4", "VAR 5"], operacion: "multiplicacion" },
       R3: { vars: ["VAR 6", "VAR 7"], operacion: "division" },
       R4: { vars: ["VAR 8", "VAR 9", "VAR 10"], operacion: "suma" },
       R5: { vars: ["VAR 11", "VAR 12", "VAR 13"], operacion: "suma" },
       R6: { vars: ["VAR 14", "VAR 15", "VAR 16"], operacion: "suma" },
+    };*/
+    const reglas = {
+      R1: { vars: [vars[0], vars[1], vars[2]], operacion: "suma" },
+      R2: { vars: [vars[3], vars[4]], operacion: "multiplicacion" },
+      R3: { vars: [vars[5], vars[6]], operacion: "division" },
+      R4: { vars: [vars[7], vars[8], vars[9]], operacion: "suma" },
+      R5: { vars: [vars[10], vars[11], vars[12]], operacion: "suma" },
+      R6: { vars: [vars[13], vars[14], vars[15]], operacion: "suma" },
     };
 
     function calcular(valorR) {
@@ -833,13 +841,39 @@
       showStep(currentStep - 1);
     }
 
-    function goToStep(stepNumber) {
+    /*function goToStep(stepNumber) {
       document.querySelectorAll('.form-step').forEach((div, index) => {
         div.style.display = (index + 1 === stepNumber) ? 'block' : 'none';
       });
       currentStep = stepNumber;
-    }
+    }*/
+    function goToStep(stepNumber) {
+      document.querySelectorAll('.form-step').forEach((div, index) => {
+        if (index + 1 === stepNumber) {
+          // Mostrar la sección actual
+          div.style.display = 'block';
+        } else {
+          // Ocultar la sección
+          div.style.display = 'none';
 
+          // Limpiar inputs, selects y textareas
+          div.querySelectorAll('input, select, textarea').forEach(el => {
+            if (el.type === 'checkbox' || el.type === 'radio') {
+              el.checked = false;
+            } else {
+              el.value = '';
+            }
+          });
+
+          // Eliminar contenido dinámico como tablas, listas, etc.
+          div.querySelectorAll('table, .tabla-dinamica, .lista-dinamica').forEach(el => {
+            el.innerHTML = '';
+          });
+        }
+      });
+
+      currentStep = stepNumber;
+    }
     /*funcion para el listar*/
     function showSection(id) {
       // Oculta todas las secciones
@@ -1128,7 +1162,6 @@
               } else {
                 td.textContent = valores[campo] || '';
 
-                // 🎨 Colorear R1-R5 con fondo y texto blanco
                 if (["R1", "R2", "R3", "R4", "R5"].includes(campo)) {
                   const val = Number(valores[campo]);
                   td.style.color = "black";
@@ -1146,12 +1179,10 @@
 
           table.appendChild(tbody);
 
-          // ✅ Envolver tabla con scroll responsivo
           const tableWrapper = document.createElement('div');
           tableWrapper.className = "table-responsive d-none d-md-block";
           tableWrapper.appendChild(table);
 
-          // 📱 Vista tipo cards (para móviles)
           const cardsWrapper = document.createElement('div');
           cardsWrapper.className = "d-block d-md-none";
 
@@ -1212,7 +1243,6 @@
                 p.className = "mb-1";
                 p.innerHTML = `<strong>${campo}:</strong> ${valores[campo] || ''}`;
 
-                // 🎨 Colorear R1-R5 con fondo y texto blanco
                 if (["R1", "R2", "R3", "R4", "R5"].includes(campo)) {
                   const val = Number(valores[campo]);
                   p.style.color = "black";
@@ -1239,202 +1269,6 @@
           resultadosDiv.innerHTML = '<p class="text-danger">Error al cargar los datos</p>';
         });
     }
-
-    /*function ejecutarBusqueda() {
-      const fechaRange = document.getElementById('FECHAC').value;
-      const categoria = document.getElementById('CATEGORIA').value;
-      const nombre = document.getElementById('NOMBRESC').value;
-
-      let fechaInicio = '';
-      let fechaFin = '';
-
-      if (fechaRange.includes(' - ')) {
-        const fechas = fechaRange.split(' - ');
-        fechaInicio = fechas[0].trim();
-        fechaFin = fechas[1].trim();
-      } else {
-        fechaInicio = fechaRange.trim();
-        fechaFin = fechaRange.trim();
-      }
-
-      let url = `${apiUrl}?tipo=busqueda&fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}&categoria=${encodeURIComponent(categoria)}`;
-      if (nombre && nombre.toLowerCase() !== "todos") {
-        url += `&nombre=${encodeURIComponent(nombre)}`;
-      }
-
-      const resultadosDiv = document.getElementById('resultados');
-      resultadosDiv.innerHTML = `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Buscando...</span></div>`;
-
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          resultadosDiv.innerHTML = '';
-
-          if (!data || data.length === 0) {
-            resultadosDiv.innerHTML = '<p class="text-danger">No se encontraron resultados</p>';
-            return;
-          }
-
-          // Calcular totales
-          const totales = data.map(row => {
-            const r1 = Number(row.datos[44] || 0);
-            const r2 = Number(row.datos[45] || 0);
-            const r3 = Number(row.datos[46] || 0);
-            const r4 = Number(row.datos[47] || 0);
-            const r5 = Number(row.datos[48] || 0);
-            return r1 + r2 + r3 + r4 + r5;
-          });
-
-          const maxTotal = Math.max(...totales);
-
-          // 🌐 Vista tipo tabla (para escritorio)
-          const table = document.createElement('table');
-          table.className = 'table table-striped table-bordered table-sm';
-
-          // Encabezado
-          const thead = document.createElement('thead');
-          const trHead = document.createElement('tr');
-          camposMostrar.forEach(campo => {
-            const th = document.createElement('th');
-            th.textContent = campo;
-            th.classList.add("text-nowrap");
-            trHead.appendChild(th);
-          });
-          thead.appendChild(trHead);
-          table.appendChild(thead);
-
-          // Cuerpo
-          const tbody = document.createElement('tbody');
-          data.forEach((row, index) => {
-            const tr = document.createElement('tr');
-
-            const valores = {
-              "FECHA": row.fecha || "",
-              "CATEGORY": row.categoria || "",
-              "NOMBRES": row.datos[4] || "",
-              "R1": Number(row.datos[44] || 0),
-              "R2": Number(row.datos[45] || 0),
-              "R3": Number(row.datos[46] || 0),
-              "R4": Number(row.datos[47] || 0),
-              "R5": Number(row.datos[48] || 0)
-            };
-
-            const total = totales[index];
-            valores["TOTAL"] = total;
-
-            camposMostrar.forEach(campo => {
-              const td = document.createElement('td');
-
-              if (campo === "TOTAL") {
-                const grafico = document.createElement('div');
-                grafico.style.width = '100px';
-                grafico.style.height = '20px';
-                grafico.style.background = '#e0e0e0';
-                grafico.style.position = 'relative';
-                grafico.title = `Total: ${total}`;
-
-                const barra = document.createElement('div');
-                barra.style.height = '100%';
-                barra.style.width = `${(total / maxTotal) * 100}%`;
-                barra.style.background = '#6431F7';
-                grafico.appendChild(barra);
-
-                td.appendChild(grafico);
-                td.style.textAlign = 'center';
-              } else {
-                td.textContent = valores[campo] || '';
-              }
-
-              tr.appendChild(td);
-            });
-
-            tbody.appendChild(tr);
-          });
-
-          table.appendChild(tbody);
-
-          // ✅ Envolver tabla con scroll responsivo
-          const tableWrapper = document.createElement('div');
-          tableWrapper.className = "table-responsive d-none d-md-block";
-          tableWrapper.appendChild(table);
-
-          // 📱 Vista tipo cards (para móviles)
-          const cardsWrapper = document.createElement('div');
-          cardsWrapper.className = "d-block d-md-none";
-
-          data.forEach((row, index) => {
-            const valores = {
-              "FECHA": row.fecha || "",
-              "CATEGORY": row.categoria || "",
-              "NOMBRES": row.datos[4] || "",
-              "R1": Number(row.datos[44] || 0),
-              "R2": Number(row.datos[45] || 0),
-              "R3": Number(row.datos[46] || 0),
-              "R4": Number(row.datos[47] || 0),
-              "R5": Number(row.datos[48] || 0)
-            };
-
-            const total = totales[index];
-            valores["TOTAL"] = total;
-
-            const card = document.createElement('div');
-            card.className = "card mb-2 shadow-sm";
-
-            const cardBody = document.createElement('div');
-            cardBody.className = "card-body p-2";
-
-            camposMostrar.forEach(campo => {
-              if (campo === "TOTAL") {
-                // Contenedor TOTAL con barra + número al lado
-                const totalWrapper = document.createElement('div');
-                totalWrapper.className = "d-flex align-items-center mb-2";
-
-                const label = document.createElement('strong');
-                label.textContent = "TOTAL:";
-                label.className = "me-2";
-
-                const valor = document.createElement('span');
-                valor.textContent = total;
-                valor.className = "fw-bold me-2";
-
-                const progress = document.createElement('div');
-                progress.className = "progress flex-grow-1";
-                progress.style.height = "12px";
-                progress.style.borderRadius = "6px";
-
-                const progressBar = document.createElement('div');
-                progressBar.className = "progress-bar";
-                progressBar.style.width = `${(total / maxTotal) * 100}%`;
-                progressBar.style.backgroundColor = "#6431F7";
-
-                progress.appendChild(progressBar);
-
-                totalWrapper.appendChild(label);
-                totalWrapper.appendChild(valor);
-                totalWrapper.appendChild(progress);
-
-                cardBody.appendChild(totalWrapper);
-
-              } else {
-                const p = document.createElement('p');
-                p.className = "mb-1";
-                p.innerHTML = `<strong>${campo}:</strong> ${valores[campo] || ''}`;
-                cardBody.appendChild(p);
-              }
-            });
-
-            card.appendChild(cardBody);
-            cardsWrapper.appendChild(card);
-          });
-
-          resultadosDiv.appendChild(tableWrapper);
-          resultadosDiv.appendChild(cardsWrapper);
-        })
-        .catch(err => {
-          console.error('Error al cargar los datos:', err);
-          resultadosDiv.innerHTML = '<p class="text-danger">Error al cargar los datos</p>';
-        });
-    }*/
     // Evento click en botón buscar
     document.getElementById('buscarBtn').addEventListener('click', ejecutarBusqueda);
     // Evento cambio en select de nombres
