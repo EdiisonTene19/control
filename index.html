@@ -1145,10 +1145,11 @@
 
               if (campo === "TOTAL") {
                 const grafico = document.createElement('div');
-                grafico.style.width = '100px';
+                grafico.style.width = '200px';
                 grafico.style.height = '20px';
                 grafico.style.background = '#e0e0e0';
                 grafico.style.position = 'relative';
+                grafico.title = `Total: ${total}`;
                 grafico.style.borderRadius = '4px';
                 grafico.style.overflow = 'hidden';
 
@@ -1156,11 +1157,20 @@
                 barra.style.height = '100%';
                 barra.style.width = `${(total / maxTotal) * 100}%`;
                 barra.style.background = '#6431F7';
-                grafico.appendChild(barra);
 
-                // 👉 Tooltip de Bootstrap
-                grafico.setAttribute("data-bs-toggle", "tooltip");
-                grafico.setAttribute("title", `Total: ${total}`);
+                const texto = document.createElement('span');
+                texto.innerText = total; // aquí va el número
+                texto.style.position = 'absolute';
+                texto.style.top = '50%';
+                texto.style.left = '50%';
+                texto.style.transform = 'translate(-50%, -50%)';
+                texto.style.color = 'black';
+                texto.style.fontSize = '12px';
+                texto.style.fontWeight = 'bold';
+                texto.style.pointerEvents = 'none'; // evita que bloquee eventos del tooltip
+
+                grafico.appendChild(barra);
+                grafico.appendChild(texto);
 
                 td.appendChild(grafico);
                 td.style.textAlign = 'center';
@@ -1269,14 +1279,6 @@
 
           resultadosDiv.appendChild(tableWrapper);
           resultadosDiv.appendChild(cardsWrapper);
-
-          const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-          tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
-              trigger: 'hover focus click'
-            });
-          });
-
         })
         .catch(err => {
           console.error('Error al cargar los datos:', err);
