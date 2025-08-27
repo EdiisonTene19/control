@@ -842,32 +842,19 @@
     }
 
     function goToStep(stepNumber) {
-      document.querySelectorAll('.form-step').forEach((div, index) => {
-        if (index + 1 === stepNumber) {
-          // Mostrar la sección actual
-          div.style.display = 'block';
-        } else {
-          // Ocultar la sección
-          div.style.display = 'none';
+      if (stepNumber === 1) {
+        // Recargar la página al volver al primer paso
+        location.reload();
+      } else {
+        // Ocultar/mostrar secciones sin limpiar
+        document.querySelectorAll('.form-step').forEach((div, index) => {
+          div.style.display = (index + 1 === stepNumber) ? 'block' : 'none';
+        });
 
-          // Limpiar inputs, selects y textareas
-          div.querySelectorAll('input, select, textarea').forEach(el => {
-            if (el.type === 'checkbox' || el.type === 'radio') {
-              el.checked = false;
-            } else {
-              el.value = '';
-            }
-          });
-
-          // Eliminar contenido dinámico como tablas, listas, etc.
-          div.querySelectorAll('table, .tabla-dinamica, .lista-dinamica').forEach(el => {
-            el.innerHTML = '';
-          });
-        }
-      });
-
-      currentStep = stepNumber;
+        currentStep = stepNumber;
+      }
     }
+
     /*funcion para el listar*/
     function showSection(id) {
       // Oculta todas las secciones
