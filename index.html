@@ -609,7 +609,7 @@
         <div class="col-md-4">
           <label class="form-label fw-bold small">CATEGORIA</label>
           <div class="input-group input-group-sm">
-            <select name="CATEGORIA" id="CATEGORIA" class="form-select form-select-sm"
+            <select name="CATEGORIAC" id="CATEGORIAC" class="form-select form-select-sm"
               style="border-radius: 6px; border: 1px solid #ccc;">
               <option value="">--Seleccionar--</option>
             </select>
@@ -841,12 +841,6 @@
       showStep(currentStep - 1);
     }
 
-    /*function goToStep(stepNumber) {
-      document.querySelectorAll('.form-step').forEach((div, index) => {
-        div.style.display = (index + 1 === stepNumber) ? 'block' : 'none';
-      });
-      currentStep = stepNumber;
-    }*/
     function goToStep(stepNumber) {
       document.querySelectorAll('.form-step').forEach((div, index) => {
         if (index + 1 === stepNumber) {
@@ -912,7 +906,7 @@
     fetch(urlC)
       .then(response => response.json())
       .then(data => {
-        const select = document.getElementById('CATEGORIA');
+        const select = document.getElementById('CATEGORIAC');
         const categorias = data.categorias;
 
         categorias.forEach(categoria => {
@@ -1026,7 +1020,7 @@
     });
     /*CAMBIO PARA LA CONSULTA*/
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("CATEGORIA").addEventListener("change", function () {
+      document.getElementById("CATEGORIAC").addEventListener("change", function () {
         const categoriaSeleccionada = this.value;
         cargarNombresPorCategoriaC(categoriaSeleccionada);
       });
@@ -1062,7 +1056,7 @@
 
     function ejecutarBusqueda() {
       const fechaRange = document.getElementById('FECHAC').value;
-      const categoria = document.getElementById('CATEGORIA').value;
+      const categoria = document.getElementById('CATEGORIAC').value;
       const nombre = document.getElementById('NOMBRESC').value;
 
       let fechaInicio = '';
