@@ -14,7 +14,8 @@
       background: #ffffff;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      /* estándar */
+
+
     }
 
     /* Para Chrome, Safari, Edge, Opera */
@@ -188,14 +189,14 @@
           </select>
         </div>
 
-        <div class="col-md-3 position-relative">
-          <label class="form-label fw-bold small">NOMBRES</label>
-          <div class="input-group">
+        <div class="col-md-3">
+          <label for="NOMBRES" class="form-label fw-bold small">NOMBRES</label>
+          <div class="position-relative">
             <select name="NOMBRES" id="NOMBRES" class="form-select" disabled>
-              <option value="">Seleccione una categoría...</option>
+              <option value="">Seleccione un nombre...</option>
             </select>
-            <!-- Spinner al lado del select -->
-            <span id="spinnerNombres" class="input-group-text d-none">
+            <!-- Spinner alineado -->
+            <span id="spinnerNombres" class="position-absolute top-50 end-0 translate-middle-y pe-2 d-none">
               <div class="spinner-border spinner-border-sm text-primary"></div>
             </span>
           </div>
@@ -809,7 +810,6 @@
     //url para el guardado
     const apiUrl = 'https://script.google.com/macros/s/AKfycbzhiLHI4GZjruRN-zkreV2gHLVCUIhgybW7OJwVB2l3kLbirJGqwg-kko74q7Doo3cYgA/exec';
 
-
     /*sumatoria con los iconos de mas y menos*/
     document.addEventListener("DOMContentLoaded", function () {
       document.querySelectorAll("button[data-target]").forEach(btn => {
@@ -940,7 +940,7 @@
         })
         .catch(err => {
           console.error('Error al cargar nombres:', err);
-          select.innerHTML = '<option value="">⚠️ Error al cargar</option>';
+          select.innerHTML = '<option value="">Error al cargar</option>';
           spinner.classList.add("d-none");
         });
     }
@@ -973,7 +973,7 @@
         })
         .catch(err => {
           console.error('Error al cargar nombres:', err);
-          select.innerHTML = '<option value="">⚠️ Error al cargar</option>';
+          select.innerHTML = '<option value="">Error al cargar</option>';
         });
     }
     /*traer la marcacion de los jugadores*/
@@ -993,7 +993,7 @@
           })
           .catch(err => {
             console.error("Error al cargar demarcación:", err);
-            demarcacionInput.value = "⚠️ Error";
+            demarcacionInput.value = "Error";
           });
 
       });
@@ -1064,7 +1064,13 @@
       }
 
       const resultadosDiv = document.getElementById('resultados');
-      resultadosDiv.innerHTML = `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Buscando...</span></div>`;
+      resultadosDiv.innerHTML = `
+      <div class="d-flex flex-column justify-content-center align-items-center" style="height:200px;">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 4rem; height: 4rem;">
+          <span class="visually-hidden">Buscando...</span>
+        </div>
+        <div class="fw-bold text-primary">Buscando...</div>
+      </div>`;
 
       fetch(url)
         .then(response => response.json())
@@ -1118,7 +1124,11 @@
               "R5": Number(row.datos[48] || 0)
             };
 
-            const total = totales[index];
+            let total = totales[index];
+            if (!Number.isInteger(total)) {
+              total = total.toFixed(2);
+            }
+
             valores["TOTAL"] = total;
 
             camposMostrar.forEach(campo => {
@@ -1127,7 +1137,7 @@
               if (campo === "TOTAL") {
                 const grafico = document.createElement('div');
                 grafico.style.width = '200px';
-                grafico.style.height = '20px';
+                grafico.style.height = '30px';
                 grafico.style.background = '#e0e0e0';
                 grafico.style.position = 'relative';
                 grafico.title = `Total: ${total}`;
@@ -1175,7 +1185,7 @@
           });
 
           table.appendChild(tbody);
-
+          /*dar formato para pantalla pequeña de celular en filas y ya no en tabla*/
           const tableWrapper = document.createElement('div');
           tableWrapper.className = "table-responsive d-none d-md-block";
           tableWrapper.appendChild(table);
@@ -1270,6 +1280,8 @@
     document.getElementById('buscarBtn').addEventListener('click', ejecutarBusqueda);
     // Evento cambio en select de nombres
     document.getElementById('NOMBRESC').addEventListener('change', ejecutarBusqueda);
+    // cambio de evento en la categoria
+    document.getElementById('CATEGORIAC').addEventListener('change', ejecutarBusqueda);
   </script>
 </body>
 
