@@ -89,6 +89,35 @@
       transform: scale(0.95);
     }
 
+    /*estilo para el boton de retroceder*/
+    .btn-morado-secundario.invertido {
+      background-color: transparent;
+      color: #fff;
+      /* Texto blanco */
+      border: 1px solid #fff;
+      /* Borde blanco */
+      padding: 2px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .btn-morado-secundario.invertido:hover {
+      background-color: #fff;
+      /* Se rellena blanco */
+      color: #6431F7;
+      /* Texto morado */
+      transform: scale(1.08);
+      box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-morado-secundario.invertido:active {
+      transform: scale(0.95);
+    }
+
     /* Botón con borde morado */
     .btn-outline-morado {
       border: 1px solid #6431F7;
@@ -157,7 +186,8 @@
   <form id="control_idv" method="POST" enctype="multipart/form-data" class="container-fluid mt-3">
     <!-- Paso 1 -->
     <div class="form-step active" id="step1">
-      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">Formulario de Control</h2>
+      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px; text-align: center;">
+        Formulario de Control</h2>
       <div class="row g-3">
         <div class="col-md-3">
           <label class="form-label fw-bold small">ID</label>
@@ -339,10 +369,14 @@
     </div>
     <!-- Pantalla 2 (PERI) -->
     <div class="form-step" id="step2" style="display: none;">
-      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">Formulario de Control</h2>
-      <div class="col-12 mt-3 d-flex justify-content-start">
-        <button type="button" class="btn-morado-secundario" onclick="prevStep()">
-          <i class="bi bi-arrow-left"></i> Atrás</button>
+      <div class="d-flex align-items-center justify-content-between"
+        style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">
+        <button type="button" class="btn-morado-secundario invertido" onclick="prevStep()">
+          <i class="bi bi-arrow-left"></i> Atrás
+        </button>
+        <h2 class="mb-0 flex-grow-1 text-center">Formulario de Control</h2>
+
+        <div style="width:70px"></div>
       </div>
       <div class="col-12 mt-4">
         <h6 class="fw-bold border-bottom-morado pb-2">PERI</h6>
@@ -457,10 +491,14 @@
     </div>
     <!-- Pantalla 3 (skin) -->
     <div class="form-step" id="step2" style="display: none;">
-      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">Formulario de Control</h2>
-      <div class="col-12 mt-3 d-flex justify-content-start">
-        <button type="button" class="btn-morado-secundario" onclick="prevStep()">
-          <i class="bi bi-arrow-left"></i> Atrás</button>
+      <div class="d-flex align-items-center justify-content-between"
+        style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">
+        <button type="button" class="btn-morado-secundario invertido" onclick="prevStep()">
+          <i class="bi bi-arrow-left"></i> Atrás
+        </button>
+        <h2 class="mb-0 flex-grow-1 text-center">Formulario de Control</h2>
+
+        <div style="width:70px"></div>
       </div>
       <div class="col-12 mt-4">
         <h6 class="fw-bold border-bottom-morado pb-2">SKIN</h6>
@@ -559,15 +597,18 @@
     </div>
     <!-- Pantalla 4 (skin) -->
     <div class="form-step" id="step2" style="display: none;">
-      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">Formulario de Control</h2>
-      <div class="col-12 mt-3 d-flex justify-content-start">
-        <button type="button" class="btn-morado-secundario" onclick="prevStep()">
-          <i class="bi bi-arrow-left"></i> Atrás</button>
+      <div class="d-flex align-items-center justify-content-between"
+        style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">
+        <button type="button" class="btn-morado-secundario invertido" onclick="prevStep()">
+          <i class="bi bi-arrow-left"></i> Atrás
+        </button>
+        <h2 class="mb-0 flex-grow-1 text-center">Formulario de Control</h2>
+
+        <div style="width:70px"></div>
       </div>
       <div class="col-12 mt-4">
         <h6 class="fw-bold border-bottom-morado pb-2">SUMMARY</h6>
       </div>
-
       <!-- Campos alineados a la izquierda con ancho pequeño -->
       <div class="mb-2 col-6 col-md-4">
         <label class="form-label small">SUM 4</label>
@@ -629,14 +670,16 @@
     </div>
     <!--pantalla para hacer la consultar de listar-->
     <div class="form-step" id="listar" style="display:none;">
-      <h2 style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">
-        Formulario de Control
-      </h2>
-      <div class="col-12 mt-3 d-flex justify-content-start">
-         <button type="button" class="btn-morado-secundario" onclick="goToStep(1)">
+      <div class="d-flex align-items-center justify-content-between"
+        style="background-color: #6431F7; color: white; padding: 10px; border-radius: 6px;">
+        <button type="button" class="btn-morado-secundario invertido" onclick="goToStep(1)">
           <i class="bi bi-arrow-left"></i> Volver</button>
+        <h2 class="mb-0 flex-grow-1 text-center">Formulario de Control</h2>
+        <div style="width:70px"></div>
       </div>
-      <br>
+      <div class="col-12 mt-4">
+        <h6 class="fw-bold border-bottom-morado pb-2">BUSQUEDA</h6>
+      </div>
       <!-- Campo de Fecha -->
       <div class="row mb-3">
         <div class="col-md-4">
