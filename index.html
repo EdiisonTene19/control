@@ -1212,7 +1212,7 @@
               "R4": Number(row.datos[47] || 0),
               "R5": Number(row.datos[48] || 0)
             };
-
+            
             let total = totales[index];
             if (!Number.isInteger(total)) {
               total = total.toFixed(2);
@@ -1255,7 +1255,7 @@
                 td.appendChild(grafico);
                 td.style.textAlign = 'center';
               } else {
-                td.textContent = valores[campo] || '';
+                td.textContent = valores[campo] ?? '';
 
                 if (["R1", "R2", "R3", "R4", "R5"].includes(campo)) {
                   const val = Number(valores[campo]);
@@ -1336,7 +1336,7 @@
               } else {
                 const p = document.createElement('p');
                 p.className = "mb-1";
-                p.innerHTML = `<strong>${campo}:</strong> ${valores[campo] || ''}`;
+                p.innerHTML = `<strong>${campo}:</strong> ${valores[campo] ?? ''}`;
 
                 if (["R1", "R2", "R3", "R4", "R5"].includes(campo)) {
                   const val = Number(valores[campo]);
